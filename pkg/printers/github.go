@@ -26,12 +26,14 @@ func formatIssueAsGithub(issue *result.Issue) string {
 		severity = issue.Severity
 	}
 
-	ret := fmt.Sprintf("::%s file=%s,line=%d", severity, issue.FilePath(), issue.Line())
+	ret := fmt.Sprintf("%s: line %d", issue.FilePath(), issue.Line())
 	if issue.Pos.Column != 0 {
-		ret += fmt.Sprintf(",col=%d", issue.Pos.Column)
+		ret += fmt.Sprintf(", col %d, ", issue.Pos.Column)
+	} else {
+		ret += ", "
 	}
 
-	ret += fmt.Sprintf("::%s (%s)", issue.Text, issue.FromLinter)
+	ret += fmt.Sprintf("%s - %s (%s)", severity, issue.Text, issue.FromLinter)
 	return ret
 }
 
